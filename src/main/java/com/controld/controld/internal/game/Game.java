@@ -4,25 +4,26 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.controld.controld.internal.account.Review;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "games")
 public class Game {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long gameId;
 
+    @Column(nullable = false)
     private String name;
     private String description;
     
@@ -35,8 +36,8 @@ public class Game {
     @Column(name = "rating_total")
     private float ratingTotal;
 
-    @ManyToOne
-    @JoinColumn(name = "publisher_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "publisher_id", nullable = false)
     private Publisher publisher;
 
     @ManyToMany
@@ -45,7 +46,7 @@ public class Game {
         joinColumns = @JoinColumn(name = "game_id"),
         inverseJoinColumns = @JoinColumn(name = "platform_id")
     )
-    private Set<Platform> availablePlatforms = new HashSet<Platform>();
+    private Set<Platform> platforms = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -53,10 +54,7 @@ public class Game {
         joinColumns = @JoinColumn(name = "game_id"),
         inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
-    private Set<Genre> fittingGenres = new HashSet<Genre>();
-
-    @OneToMany(mappedBy = "game")
-    private Set<Review> reviews = new HashSet<>();
+    private Set<Genre> genres = new HashSet<>();
 
 
     public Game(){
@@ -113,5 +111,41 @@ public class Game {
 
     public void setRatingTotal(float ratingTotal){
         this.ratingTotal = ratingTotal;
+    }
+
+    public Publisher getPublisher(){
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher){
+        this.publisher = publisher;
+    }
+
+    void addPlatform(Platform platform){
+        platforms.add(platform);
+        platform.getGames().add(this);
+    }
+
+    void removePlatform(Long platformId){
+        for(Platform platform : platforms){
+            if(platform.getId() == platformId){
+                platforms.remove(platform);
+                platform.getGames().remove(this);
+                return;
+            }
+        }
+    }
+
+    void addGenre(Genre genre){
+        genres.add(genre);
+    }
+
+    void removeGenre(Long genreId){
+        for(Genre genre : genres){
+            if(genre.getId() == genreId){
+                genres.remove(genre);
+                return;
+            }
+        }
     }
 }

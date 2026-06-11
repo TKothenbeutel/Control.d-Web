@@ -5,6 +5,8 @@ import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
@@ -13,12 +15,14 @@ import jakarta.persistence.Table;
 @Table(name = "genres")
 public class Genre {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long genreID;
+    private long genreId;
 
+    @Column(nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "fittingGenres")
+    @ManyToMany(mappedBy = "genres")
     private Set<Game> games = new HashSet<>();
 
     public Genre(){
@@ -29,8 +33,12 @@ public class Genre {
     }
 
     //Getters + Setters
-    public long getID(){
-        return genreID;
+    public long getId(){
+        return genreId;
+    }
+
+    void setId(Long id){
+        this.genreId = id;
     }
 
     public String getName(){
@@ -39,5 +47,13 @@ public class Genre {
 
     public void setName(String name){
         this.name = name;
+    }
+
+    public Set<Game> getGames(){
+        return games;
+    }
+
+    public void setGames(Set<Game> games){
+        this.games = games;
     }
 }

@@ -74,7 +74,7 @@ public class Account {
     }
 
     void removeGame(Long gameId){
-        for(Game game : this.favoriteGames){
+        for(Game game : favoriteGames){
             if(game.getId() == gameId){
                 favoriteGames.remove(game);
                 return;

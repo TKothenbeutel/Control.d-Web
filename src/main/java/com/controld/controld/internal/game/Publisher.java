@@ -1,12 +1,8 @@
 package com.controld.controld.internal.game;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,12 +10,10 @@ import jakarta.persistence.Table;
 public class Publisher {
     @Id
     @Column(name = "id")
-    private long publisherID;
+    private long publisherId;
 
+    @Column(nullable = false)
     private String name;
-
-    @ManyToMany(mappedBy = "publisher")
-    private Set<Game> games = new HashSet<>();
 
     public Publisher(){
     }
@@ -29,8 +23,12 @@ public class Publisher {
     }
 
     //Getters + Setters
-    public long getID(){
-        return publisherID;
+    public long getId(){
+        return publisherId;
+    }
+
+    void setId(Long id){
+        this.publisherId = id;
     }
 
     public String getName(){
