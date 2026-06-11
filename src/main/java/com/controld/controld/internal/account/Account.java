@@ -7,6 +7,8 @@ import com.controld.controld.internal.game.Game;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -18,6 +20,7 @@ import jakarta.persistence.Table;
 @Table(name = "accounts")
 public class Account {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long accountID;
 
@@ -25,8 +28,6 @@ public class Account {
     private String username;
 
     @OneToMany(mappedBy = "account")
-    //Maybe this should be:
-    //public Set<Review> getReviews() { return reviews; }
     private Set<Review> reviews = new HashSet<Review>();
 
     @ManyToMany
@@ -36,8 +37,8 @@ public class Account {
         inverseJoinColumns = @JoinColumn(name = "game_id")
     )
     private Set<Game> favoriteGames = new HashSet<Game>();
-
-    public Account(){
+    
+    protected Account(){
     }
 
     public Account(String email, String username){
@@ -46,6 +47,14 @@ public class Account {
     }
 
     //Getter and setters
+    public long getId(){
+        return accountID;
+    }
+
+    void setAccountID(long id){
+        this.accountID = id;
+    }
+
     public String getEmail(){
         return email;
     }
@@ -60,5 +69,10 @@ public class Account {
 
     public void setUsername(String username){
         this.username = username;
+    }
+
+    @Override
+    public String toString() {
+        return "Account of id " + this.accountID + ", email " + this.email + ", and username " + this.username;
     }
 }

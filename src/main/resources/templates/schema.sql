@@ -1,10 +1,10 @@
-#Game publishers
+-- Game publishers
 CREATE TABLE publishers(
     id INTEGER PRIMARY KEY,
     name VARCHAR(32)
 );
 
-#Big 3: games, accounts, reviews
+-- Big 3: games, accounts, reviews
 CREATE TABLE games(
     id INTEGER PRIMARY KEY,
     name VARCHAR(64),
@@ -18,9 +18,9 @@ CREATE TABLE games(
 
 CREATE TABLE accounts(
     id INTEGER PRIMARY KEY,
-    email UNIQUE VARCHAR(64),
-    password VARCHAR(64),
+    email VARCHAR(64),
     username VARCHAR(32),
+    password VARCHAR(64)
 );
 
 CREATE TABLE reviews(
@@ -36,7 +36,7 @@ CREATE TABLE reviews(
 );
 
 
-#Big 3 intermediates
+-- Big 3 intermediates
 CREATE TABLE account_games(
     account_id INTEGER,
     game_id INTEGER,
@@ -46,7 +46,7 @@ CREATE TABLE account_games(
 );
 
 
-#Game descriptors + intermediates
+-- Game descriptors + intermediates
 CREATE TABLE platforms(
     id INTEGER PRIMARY KEY,
     name VARCHAR(32)

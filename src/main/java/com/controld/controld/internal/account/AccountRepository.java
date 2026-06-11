@@ -1,7 +1,10 @@
 package com.controld.controld.internal.account;
 
-import org.springframework.data.repository.Repository;
+import java.util.List;
 
-public interface AccountRepository extends Repository<Account, Long>{
+import org.springframework.data.jpa.repository.JpaRepository;
 
+public interface AccountRepository extends JpaRepository<Account, Long>{
+    public Account findById(long id);
+    public List<Account> findByUsername(String username);
 }
