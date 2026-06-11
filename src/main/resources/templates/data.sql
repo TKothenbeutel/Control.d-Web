@@ -15,8 +15,8 @@ INSERT INTO genres VALUES
 (2, 'Platformer');
 
 -- Games
-INSERT INTO games(id, name, release_date, publisher_id, description) VALUES
-(1, 'Portal', '2007-10-10', 1, 'Set in the mysterious Aperture Science Laboratories, Portal has been called one of the most innovative new games on the horizon and will offer gamers hours of unique gameplay.');
+INSERT INTO games VALUES
+(1, 'Portal', '2007-10-10', 1, 'Set in the mysterious Aperture Science Laboratories, Portal has been called one of the most innovative new games on the horizon and will offer gamers hours of unique gameplay.', 1, 4.9);
 
 -- Game Descriptors
 INSERT INTO game_platforms VALUES
@@ -32,6 +32,10 @@ INSERT INTO game_genres VALUES
 INSERT INTO accounts VALUES
 (1, 'fake@mail.com', 'foobar', 'hihi');
 
+-- Account favorites
+INSERT INTO account_games VALUES
+(1,1);
+
 -- Reviews
-INSERT INTO reviews(id, game_id, account_id, rating, title, body) VALUES
-(1, 1, 1, 4.9, 'Very good game!', 'Oh my goodness this game is awesome! I love being able to go through the portals and also experience the story. I hope they make a sequel!');
+INSERT INTO reviews VALUES
+(1, 1, 1, 4.9, 'Very good game!', 'Oh my goodness this game is awesome! I love being able to go through the portals and also experience the story. I hope they make a sequel!', 0);

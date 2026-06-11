@@ -1,9 +1,14 @@
 package com.controld.controld.internal.account;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.controld.controld.internal.game.Game;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -13,18 +18,23 @@ import jakarta.persistence.Table;
 @Table(name = "reviews")
 public class Review {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long reviewID;
+    private Long reviewId;
 
-    @ManyToOne
-    @JoinColumn(name = "account_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "account_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Account account;
 
-    @ManyToOne
-    @JoinColumn(name = "game_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "game_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Game game;
 
+    @Column(nullable = false)
     private float rating;
+    @Column(nullable = false)
     private String title;
     private String body;
     private int likes;
@@ -32,14 +42,22 @@ public class Review {
     public Review(){
     }
 
-    public Review(float rating, String title, String body, int likes){
+    public Review(float rating, String title, String body){
         this.rating = rating;
         this.title = title;
         this.body = body;
-        this.likes = likes;
+        this.likes = 0;
     }
 
     //Getter and setters
+    public Long getId(){
+        return reviewId;
+    }
+
+    void setReviewId(Long id){
+        this.reviewId = id;
+    }
+
     public String getTitle(){
         return title;
     }
@@ -70,5 +88,21 @@ public class Review {
 
     public void setLikes(int likes){
         this.likes = likes;
+    }
+
+    public Account getAccount(){
+        return account;
+    }
+
+    public void setAccount(Account account){
+        this.account = account;
+    }
+
+    public Game getGame(){
+        return game;
+    }
+
+    public void setGame(Game game){
+        this.game = game;
     }
 }

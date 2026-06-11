@@ -21,7 +21,7 @@ import jakarta.persistence.Table;
 public class Game {
     @Id
     @Column(name = "id")
-    private Long gameID;
+    private Long gameId;
 
     private String name;
     private String description;
@@ -71,6 +71,13 @@ public class Game {
     }
 
     //Getters and setters
+    public Long getId(){
+        return gameId;
+    }
+
+    void setGameId(Long id){
+        this.gameId = id;
+    }
 
     public String getName(){
         return name;

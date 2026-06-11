@@ -1,15 +1,15 @@
 -- Game publishers
 CREATE TABLE publishers(
-    id INTEGER PRIMARY KEY,
-    name VARCHAR(32)
+    id INTEGER PRIMARY KEY NOT NULL,
+    name VARCHAR(32) NOT NULL
 );
 
 -- Big 3: games, accounts, reviews
 CREATE TABLE games(
-    id INTEGER PRIMARY KEY,
-    name VARCHAR(64),
+    id INTEGER PRIMARY KEY NOT NULL,
+    name VARCHAR(64) NOT NULL,
     release_date DATE,
-    publisher_id INTEGER,
+    publisher_id INTEGER NOT NULL,
     description VARCHAR(512),
     review_count INTEGER,
     rating_total FLOAT,
@@ -17,18 +17,18 @@ CREATE TABLE games(
 );
 
 CREATE TABLE accounts(
-    id INTEGER PRIMARY KEY,
-    email VARCHAR(64),
-    username VARCHAR(32),
-    password VARCHAR(64)
+    id INTEGER PRIMARY KEY NOT NULL,
+    email VARCHAR(64) UNIQUE NOT NULL,
+    username VARCHAR(32) NOT NULL,
+    password VARCHAR(64) NOT NULL
 );
 
 CREATE TABLE reviews(
-    id INTEGER PRIMARY KEY,
-    game_id INTEGER,
-    account_id INTEGER,
-    rating FLOAT,
-    title VARCHAR(64),
+    id INTEGER PRIMARY KEY NOT NULL,
+    game_id INTEGER NOT NULL,
+    account_id INTEGER NOT NULL,
+    rating FLOAT NOT NULL,
+    title VARCHAR(64) NOT NULL,
     body VARCHAR(512),
     likes INTEGER,
     FOREIGN KEY (game_id) REFERENCES games(id),
@@ -38,8 +38,8 @@ CREATE TABLE reviews(
 
 -- Big 3 intermediates
 CREATE TABLE account_games(
-    account_id INTEGER,
-    game_id INTEGER,
+    account_id INTEGER NOT NULL,
+    game_id INTEGER NOT NULL,
     PRIMARY KEY (account_id, game_id),
     FOREIGN KEY (account_id) REFERENCES accounts(id),
     FOREIGN KEY (game_id) REFERENCES games(id)
@@ -48,26 +48,26 @@ CREATE TABLE account_games(
 
 -- Game descriptors + intermediates
 CREATE TABLE platforms(
-    id INTEGER PRIMARY KEY,
-    name VARCHAR(32)
+    id INTEGER PRIMARY KEY NOT NULL,
+    name VARCHAR(32) NOT NULL
 );
 
 CREATE TABLE game_platforms(
-    game_id INTEGER,
-    platform_id INTEGER,
+    game_id INTEGER NOT NULL,
+    platform_id INTEGER NOT NULL,
     PRIMARY KEY (game_id, platform_id),
     FOREIGN KEY (game_id) REFERENCES games(id),
     FOREIGN KEY (platform_id) REFERENCES platforms(id)
 );
 
 CREATE TABLE genres(
-    id INTEGER PRIMARY KEY,
-    name VARCHAR(32)
+    id INTEGER PRIMARY KEY NOT NULL,
+    name VARCHAR(32) NOT NULL
 );
 
 CREATE TABLE game_genres(
-    game_id INTEGER,
-    genre_id INTEGER,
+    game_id INTEGER NOT NULL,
+    genre_id INTEGER NOT NULL,
     PRIMARY KEY (game_id, genre_id),
     FOREIGN KEY (game_id) REFERENCES games(id),
     FOREIGN KEY (genre_id) REFERENCES genres(id)

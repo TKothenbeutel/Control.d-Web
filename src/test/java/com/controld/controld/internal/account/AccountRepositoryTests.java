@@ -1,8 +1,6 @@
 package com.controld.controld.internal.account;
 
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
@@ -13,8 +11,6 @@ import java.util.List;
 
 @DataJpaTest
 public class AccountRepositoryTests {
-
-    Logger logger = LoggerFactory.getLogger(AccountRepositoryTests.class);
 
     @Autowired
     private AccountRepository accountRepository;
@@ -32,19 +28,31 @@ public class AccountRepositoryTests {
     @Test
     void shouldFindAccountByUsername(){
         List<Account> accounts = accountRepository.findByUsername("foobar");
-
         assertThat(accounts).isNotNull();
         assertThat(accounts.size()).isEqualTo(1);
-        assertThat(accounts.get(0).getEmail()).isEqualTo("fake@mail.com");
-        assertThat(accounts.get(0).getId()).isEqualTo(1);
-        
+
+        Account account = accounts.get(0);
+        assertThat(account.getEmail()).isEqualTo("fake@mail.com");
+        assertThat(account.getId()).isEqualTo(1L);    
     }
 
     @Test
-    void shouldFindAccountByUsernameFail(){
-        List<Account> accounts = accountRepository.findByUsername("Nonexistent");
+    void shouldFindAccountByEmail(){
+        Account account = accountRepository.findByEmail("fake@mail.com");
 
+        assertThat(account).isNotNull();
+        assertThat(account.getId()).isEqualTo(1L); 
+        assertThat(account.getUsername()).isEqualTo("foobar");
+    }
+
+    @Test
+    void shouldFindAccountByFavoriteGameId(){
+        List<Account> accounts = accountRepository.findAccountsByFavoriteGamesId(1L);
         assertThat(accounts).isNotNull();
-        assertThat(accounts).isEmpty();
+        assertThat(accounts.size()).isEqualTo(1);
+
+        Account account = accounts.get(0);
+        assertThat(account.getEmail()).isEqualTo("fake@mail.com");
+        assertThat(account.getId()).isEqualTo(1L);
     }
 }

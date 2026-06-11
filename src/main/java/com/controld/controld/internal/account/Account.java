@@ -13,7 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,13 +21,12 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long accountID;
+    private Long accountId;
 
+    @Column(unique = true, nullable = false)
     private String email;
+    @Column(nullable = false)
     private String username;
-
-    @OneToMany(mappedBy = "account")
-    private Set<Review> reviews = new HashSet<Review>();
 
     @ManyToMany
     @JoinTable(
@@ -36,7 +34,7 @@ public class Account {
         joinColumns = @JoinColumn(name = "account_id"),
         inverseJoinColumns = @JoinColumn(name = "game_id")
     )
-    private Set<Game> favoriteGames = new HashSet<Game>();
+    private Set<Game> favoriteGames = new HashSet<>();
     
     protected Account(){
     }
@@ -48,11 +46,11 @@ public class Account {
 
     //Getter and setters
     public long getId(){
-        return accountID;
+        return accountId;
     }
 
-    void setAccountID(long id){
-        this.accountID = id;
+    void setAccountId(long id){
+        this.accountId = id;
     }
 
     public String getEmail(){
@@ -71,8 +69,16 @@ public class Account {
         this.username = username;
     }
 
-    @Override
-    public String toString() {
-        return "Account of id " + this.accountID + ", email " + this.email + ", and username " + this.username;
+    void addGame(Game game){
+        favoriteGames.add(game);
+    }
+
+    void removeGame(Long gameId){
+        for(Game game : this.favoriteGames){
+            if(game.getId() == gameId){
+                favoriteGames.remove(game);
+                return;
+            }
+        }
     }
 }
