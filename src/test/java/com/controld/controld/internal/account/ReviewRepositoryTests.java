@@ -3,6 +3,7 @@ package com.controld.controld.internal.account;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,21 @@ public class ReviewRepositoryTests {
     @Test
     void shouldGetReviewsByGameId(){
         List<Review> reviews = reviewRepository.findByGameId(1L);
-        assertThat(reviews).isNotNull();
         assertThat(reviews.size()).isEqualTo(1);
 
         Review review = reviews.get(0);
         assertThat(review.getId()).isEqualTo(1);
         assertThat(review.getRating()).isEqualTo(4.9f);
         assertThat(review.getTitle()).isEqualTo("Very good game!");
+    }
+
+    @Test
+    void shouldGetReviewByAccountIdAndGameId(){
+        Optional<Review> review = reviewRepository.findByAccountIdAndGameId(1L, 1L);
+
+        assertThat(review).isPresent();
+        assertThat(review.get().getId()).isEqualTo(1);
+        assertThat(review.get().getRating()).isEqualTo(4.9f);
+        assertThat(review.get().getTitle()).isEqualTo("Very good game!");
     }
 }

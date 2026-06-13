@@ -7,6 +7,7 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @DataJpaTest
@@ -17,18 +18,17 @@ public class GameRepositoryTests {
 
     @Test
     void shouldFindGameById(){
-        Game game = gameRepository.findById(1);
+        Optional<Game> game = gameRepository.findById(1);
 
-        assertThat(game).isNotNull();
-        assertThat(game.getName()).isEqualTo("Portal");
-        assertThat(game.getReleaseDate().toString()).isEqualTo("2007-10-10");
+        assertThat(game).isPresent();
+        assertThat(game.get().getName()).isEqualTo("Portal");
+        assertThat(game.get().getReleaseDate().toString()).isEqualTo("2007-10-10");
         
     }
 
     @Test
     void shouldFindGameByName(){
         List<Game> games = gameRepository.findByName("Portal");
-        assertThat(games).isNotNull();
         assertThat(games.size()).isEqualTo(1);
 
         Game game = games.get(0);
@@ -40,7 +40,6 @@ public class GameRepositoryTests {
     @Test
     void shouldFindGameByPublisherId(){
         List<Game> games = gameRepository.findGamesByPublisherId(1L);
-        assertThat(games).isNotNull();
         assertThat(games.size()).isEqualTo(1);
 
         Game game = games.get(0);
@@ -52,7 +51,6 @@ public class GameRepositoryTests {
     @Test
     void shouldFindGameByPlatformId(){
         List<Game> games = gameRepository.findGamesByPlatformsId(1L);
-        assertThat(games).isNotNull();
         assertThat(games.size()).isEqualTo(1);
 
         Game game = games.get(0);
@@ -64,7 +62,6 @@ public class GameRepositoryTests {
     @Test
     void shouldFindGameByGenreId(){
         List<Game> games = gameRepository.findGamesByGenresId(1L);
-        assertThat(games).isNotNull();
         assertThat(games.size()).isEqualTo(1);
 
         Game game = games.get(0);
