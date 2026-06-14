@@ -1,6 +1,7 @@
 package com.controld.controld.internal.account;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 
 import jakarta.transaction.Transactional;
 
@@ -13,6 +14,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByGameId(Long gameId);
     Optional<Review> findByAccountIdAndGameId(Long accountId, Long gameId);
 
+    @Modifying
     @Transactional
     void deleteByAccountId(Long accountId);
     @Transactional

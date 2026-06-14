@@ -3,6 +3,7 @@ package com.controld.controld.internal.account;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,6 +16,10 @@ public class AccountRepositoryTests {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    //Used for test that deletes account (check that reviews are deleted too)
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Test
     void shouldFindAccountById(){
@@ -53,5 +58,30 @@ public class AccountRepositoryTests {
         Account account = accounts.get(0);
         assertThat(account.getEmail()).isEqualTo("fake@mail.com");
         assertThat(account.getId()).isEqualTo(1L);
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldSaveNewlyMadeAccount(){
+        Account account = new Account("email@email.com", "JohnDoe", "123");
+        accountRepository.save(account);
+
+        Optional<Account> savedAccount = accountRepository.findByEmail(account.getEmail());
+        assertThat(savedAccount).isPresent();
+        assertThat(savedAccount.get().getId()).isNotNull(); 
+        assertThat(savedAccount.get().getUsername()).isEqualTo("JohnDoe");
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldDeleteAccountAndReviews(){
+        accountRepository.deleteById(1L);
+        accountRepository.flush();
+
+        Optional<Account> account = accountRepository.findById(1L);
+        assertThat(account).isEmpty();
+
+        List<Review> reviews = reviewRepository.findByAccountId(1L);
+        assertThat(reviews).isEmpty();
     }
 }

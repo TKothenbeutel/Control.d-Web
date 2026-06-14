@@ -19,14 +19,16 @@ import jakarta.persistence.Table;
 @Table(name = "accounts")
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long accountId;
 
     @Column(unique = true, nullable = false)
     private String email;
     @Column(nullable = false)
     private String username;
+    @Column(nullable = false)
+    private String password;
 
     @ManyToMany
     @JoinTable(
@@ -39,9 +41,10 @@ public class Account {
     protected Account(){
     }
 
-    public Account(String email, String username){
+    public Account(String email, String username, String password){
         this.email = email;
         this.username = username;
+        this.password = password;
     }
 
     //Getter and setters
@@ -49,7 +52,7 @@ public class Account {
         return accountId;
     }
 
-    void setAccountId(long id){
+    public void setId(long id){
         this.accountId = id;
     }
 
@@ -67,6 +70,14 @@ public class Account {
 
     public void setUsername(String username){
         this.username = username;
+    }
+
+    public String getPassword(){
+        return password;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
     }
 
     void addGame(Game game){
