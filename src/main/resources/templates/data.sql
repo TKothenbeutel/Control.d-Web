@@ -30,7 +30,8 @@ INSERT INTO game_genres VALUES
 
 -- Accounts
 INSERT INTO accounts(email, username, password) VALUES
-('fake@mail.com', 'foobar', 'hihi');
+('fake@mail.com', 'foobar', 'hihi'),
+('test@mail.com', 'Jane_Doe', '1234');
 
 -- Account favorites
 INSERT INTO account_games VALUES

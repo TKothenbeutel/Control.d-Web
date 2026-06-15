@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,6 +41,7 @@ public class Game {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "publisher_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Publisher publisher;
 
     @ManyToMany
@@ -68,12 +72,20 @@ public class Game {
         this.ratingTotal = ratingTotal;
     }
 
+    public Game(String name, String description, String releaseDate, int reviewCount, float ratingTotal){
+        this.name = name;
+        this.description = description;
+        this.releaseDate = Date.valueOf(releaseDate);;
+        this.reviewCount = reviewCount;
+        this.ratingTotal = ratingTotal;
+    }
+
     //Getters and setters
     public Long getId(){
         return gameId;
     }
 
-    void setGameId(Long id){
+    public void setGameId(Long id){
         this.gameId = id;
     }
 
@@ -121,12 +133,12 @@ public class Game {
         this.publisher = publisher;
     }
 
-    void addPlatform(Platform platform){
+    public void addPlatform(Platform platform){
         platforms.add(platform);
         platform.getGames().add(this);
     }
 
-    void removePlatform(Long platformId){
+    public void removePlatform(Long platformId){
         for(Platform platform : platforms){
             if(platform.getId() == platformId){
                 platforms.remove(platform);
@@ -136,11 +148,11 @@ public class Game {
         }
     }
 
-    void addGenre(Genre genre){
+    public void addGenre(Genre genre){
         genres.add(genre);
     }
 
-    void removeGenre(Long genreId){
+    public void removeGenre(Long genreId){
         for(Genre genre : genres){
             if(genre.getId() == genreId){
                 genres.remove(genre);

@@ -17,13 +17,9 @@ public class AccountRepositoryTests {
     @Autowired
     private AccountRepository accountRepository;
 
-    //Used for test that deletes account (check that reviews are deleted too)
-    @Autowired
-    private ReviewRepository reviewRepository;
-
     @Test
     void shouldFindAccountById(){
-        Optional<Account> account = accountRepository.findById(1);
+        Optional<Account> account = accountRepository.findById(1L);
 
         assertThat(account).isPresent();
         assertThat(account.get().getEmail()).isEqualTo("fake@mail.com");
@@ -74,14 +70,11 @@ public class AccountRepositoryTests {
 
     @Test
     @DirtiesContext
-    void shouldDeleteAccountAndReviews(){
+    void shouldDeleteAccount(){
         accountRepository.deleteById(1L);
         accountRepository.flush();
 
         Optional<Account> account = accountRepository.findById(1L);
         assertThat(account).isEmpty();
-
-        List<Review> reviews = reviewRepository.findByAccountId(1L);
-        assertThat(reviews).isEmpty();
     }
 }

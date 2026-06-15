@@ -3,6 +3,7 @@ package com.controld.controld.internal.game;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,7 +19,7 @@ public class PublisherRepositoryTests {
 
     @Test
     void shouldFindPublisherById(){
-        Optional<Publisher> publisher = publisherRepository.findById(1);
+        Optional<Publisher> publisher = publisherRepository.findById(1L);
 
         assertThat(publisher).isPresent();
         assertThat(publisher.get().getName()).isEqualTo("Valve");
@@ -33,5 +34,27 @@ public class PublisherRepositoryTests {
         Publisher publisher = publishers.get(0);
         assertThat(publisher.getId()).isEqualTo(1L); 
         assertThat(publisher.getName()).isEqualTo("Valve");
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldSaveNewlyMadePublisher(){
+        Publisher publisher = new Publisher("Sony");
+        
+        publisher = publisherRepository.save(publisher);
+
+        Optional<Publisher> savedPublisher = publisherRepository.findById(publisher.getId());
+        assertThat(savedPublisher).isPresent();
+        assertThat(savedPublisher.get()).isEqualTo(publisher);
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldDeletePublisher(){
+        publisherRepository.deleteById(1L);
+        publisherRepository.flush();
+
+        Optional<Publisher> publisher = publisherRepository.findById(1L);
+        assertThat(publisher).isEmpty();
     }
 }

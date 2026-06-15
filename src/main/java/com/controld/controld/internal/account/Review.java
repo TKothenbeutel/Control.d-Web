@@ -5,7 +5,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.controld.controld.internal.game.Game;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

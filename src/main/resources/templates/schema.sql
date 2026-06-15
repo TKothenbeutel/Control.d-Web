@@ -13,7 +13,7 @@ CREATE TABLE games(
     description VARCHAR(512),
     review_count INTEGER,
     rating_total FLOAT,
-    FOREIGN KEY (publisher_id) REFERENCES publishers(id)
+    FOREIGN KEY (publisher_id) REFERENCES publishers(id) ON DELETE CASCADE
 );
 
 CREATE TABLE accounts(
